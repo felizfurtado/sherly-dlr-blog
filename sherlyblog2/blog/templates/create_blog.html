@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Blog</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #0f0f0f;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  padding: 40px;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;   /* 👈 increased from 900 */
+  margin: auto;
+}
+
+/* Title */
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  background: #111;
+  border: 1px solid #222;
+  color: #fff;
+  border-radius: 8px;
+}
+
+/* Button */
+button {
+  padding: 12px 20px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* CKEditor container */
+.ck-editor__editable {
+  min-height: 800px !important;   /* 👈 BIG editor */
+  background: #ffffff !important; /* 👈 WHITE editor */
+  color: #000 !important;
+  padding: 20px !important;
+}
+
+/* Toolbar */
+.ck-toolbar {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+button {
+  margin-top: 20px;   /* 👈 space from editor */
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Create Blog</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="Title">
+
+    <input type="text" name="category" placeholder="Category">
+
+    <input type="text" name="image" placeholder="Image URL">
+
+    <textarea name="content" id="editor"></textarea>
+
+    <button type="submit">Publish</button>
+  </form>
+</div>
+
+<script>
+ClassicEditor
+  .create(document.querySelector('#editor'), {
+    toolbar: [
+      'heading',
+      '|',
+      'bold', 'italic', 'underline', 'strikethrough',
+      '|',
+      'link',
+      'bulletedList', 'numberedList',
+      '|',
+      'outdent', 'indent',
+      '|',
+      'blockQuote',
+      'insertTable',
+    //   'uploadImage',
+    //   'mediaEmbed',
+      '|',
+      'undo', 'redo'
+    ]
+  })
+  .catch(error => {
+    console.error(error);
+  });
+</script>
+
+</body>
+</html>

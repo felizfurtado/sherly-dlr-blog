@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ blog.title }} · DLR Training Institute</title>
+
+<!-- Google Fonts — matching DLR style -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+
+<style>
+/* ----- ROOT & GLOBAL (DLR style) ----- */
+:root {
+  --primary-color: #fea70a;
+  --secondary-color: #d18c00;
+  --dark-color: #000000;
+  --light-color: #ffffff;
+  --gray-color: #f5f5f5;
+  --text-color: #333333;
+  --font-main: 'Montserrat', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+  --font-accent: 'Playfair Display', serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-secondary);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-color: #0f0f0f;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-main);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* ----- NAVIGATION (DLR style) ----- */
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 20px 0;
+  background-color: var(--dark-color);
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav.scrolled {
+  padding: 12px 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.logo-img {
+  height: 80px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 35px;
+}
+
+.nav-link {
+  color: var(--light-color);
+  text-decoration: none;
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: 17px;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+/* Hamburger */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+  position: relative;
+}
+
+.menu-toggle span {
+  width: 100%;
+  height: 3px;
+  background-color: var(--light-color);
+  transition: all 0.3s ease;
+  transform-origin: left center;
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(-3px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(3px);
+}
+
+/* ----- BLOG CONTENT CONTAINER ----- */
+.blog-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 140px 20px 80px;
+}
+
+/* Back link */
+.back-link {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: #aaa;
+  text-decoration: none;
+  font-family: var(--font-main);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--primary-color);
+}
+
+/* Blog title */
+.blog-title {
+  font-size: 48px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--light-color);
+  font-family: var(--font-main);
+}
+
+/* Meta info */
+.blog-meta {
+  color: #888;
+  margin-bottom: 30px;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+}
+
+.blog-meta .category {
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Hero image */
+.blog-hero-img {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  object-fit: cover;
+}
+
+/* Blog content */
+.blog-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #ddd;
+  font-family: var(--font-secondary);
+}
+
+.blog-content h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+  color: var(--light-color);
+  font-family: var(--font-main);
+}
+
+.blog-content h2 {
+  font-size: 28px;
+  margin: 30px 0 10px;
+  color: var(--light-color);
+  font-family: var(--font-main);
+}
+
+.blog-content h3 {
+  font-size: 22px;
+  margin: 25px 0 10px;
+  color: var(--light-color);
+  font-family: var(--font-main);
+}
+
+.blog-content p {
+  margin-bottom: 16px;
+  color: #ccc;
+  line-height: 1.8;
+}
+
+.blog-content img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 25px 0;
+}
+
+.blog-content ul,
+.blog-content ol {
+  padding-left: 20px;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+.blog-content li {
+  margin-bottom: 8px;
+}
+
+.blog-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blog-content a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 20px;
+  margin: 20px 0;
+  font-style: italic;
+  color: #aaa;
+}
+
+.blog-content code {
+  background: #1a1a1a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--primary-color);
+}
+
+.blog-content pre {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.blog-content pre code {
+  background: none;
+  padding: 0;
+  color: #ddd;
+}
+
+/* Share section */
+.share-section {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #222;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.share-section span {
+  color: #888;
+  font-family: var(--font-main);
+  font-weight: 500;
+}
+
+.share-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #222;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.share-btn:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+.share-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
+
+/* ----- FOOTER (DLR style) ----- */
+.main-footer {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  padding: 80px 0 40px;
+  margin-top: 60px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 50px;
+  margin-bottom: 50px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo img {
+  height: 80px;
+  width: auto;
+  margin-bottom: 20px;
+}
+
+.footer-tagline {
+  font-size: 1.1rem;
+  color: #999;
+  max-width: 300px;
+}
+
+.footer-heading {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 25px;
+  font-family: var(--font-main);
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 15px;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.contact-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.contact-item p {
+  margin: 0;
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #333;
+  padding-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.copyright {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-5px);
+}
+
+.social-links img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 1200px) {
+  .nav-container {
+    padding: 0 30px;
+  }
+  .container {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 85%;
+    max-width: 350px;
+    height: 100vh;
+    background-color: var(--dark-color);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 120px 40px 40px;
+    gap: 25px;
+    transition: left 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+    z-index: 1001;
+    box-shadow: 5px 0 30px rgba(0,0,0,0.3);
+  }
+  
+  .nav-menu.active {
+    left: 0;
+  }
+  
+  .nav-link {
+    font-size: 1.2rem;
+    padding: 10px 0;
+    width: 100%;
+    display: block;
+  }
+  
+  .blog-container {
+    padding: 120px 20px 60px;
+  }
+  
+  .blog-title {
+    font-size: 36px;
+  }
+  
+  .blog-content {
+    font-size: 16px;
+  }
+  
+  .blog-content h1 {
+    font-size: 32px;
+  }
+  
+  .blog-content h2 {
+    font-size: 24px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-img {
+    height: 60px;
+  }
+  
+  .blog-title {
+    font-size: 28px;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .footer-tagline {
+    max-width: none;
+  }
+  
+  .contact-item {
+    justify-content: center;
+    text-align: left;
+  }
+  
+  .share-section {
+    justify-content: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION — DLR Style -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <div class="logo">
+      <img src="https://www.dlrtraining.institute/assets/dlr-logo%20for%20black%20background%201.png" alt="DLR Training Institute Logo" class="logo-img" />
+    </div>
+    <button class="menu-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu">
+      <li><a href="https://www.dlrtraining.institute/index.html" class="nav-link">Home</a></li>
+      <li><a href="https://www.dlrtraining.institute/about.html" class="nav-link">About</a></li>
+      <li><a href="https://www.dlrtraining.institute/courses.html" class="nav-link">Courses</a></li>
+      <li><a href="https://www.dlrtraining.institute/fac.html" class="nav-link">Facilities</a></li>
+      <li><a href="https://www.dlrtraining.institute/gallery.html" class="nav-link">Gallery</a></li>
+      <li><a href="blog.html" class="nav-link active">Blog</a></li>
+      <li><a href="https://www.dlrtraining.institute/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BLOG CONTENT -->
+<div class="blog-container">
+
+  <a href="/" class="back-link">← Back to blogs</a>
+
+  <h1 class="blog-title">{{ blog.title }}</h1>
+
+  <div class="blog-meta">
+    <span class="category">{{ blog.category }}</span> • 
+    {{ blog.created_at|date:"M d, Y" }}
+  </div>
+
+  <img src="{{ blog.image }}" alt="{{ blog.title }}" class="blog-hero-img">
+
+  <div class="blog-content">
+    {{ blog.content|safe }}
+  </div>
+
+  <!-- Share Section -->
+  <div class="share-section">
+    <span>Share this article:</span>
+    <div class="share-buttons">
+      <a href="#" class="share-btn" aria-label="Share on Facebook">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="#" class="share-btn" aria-label="Share on X">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" class="share-btn" aria-label="Share on LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="#" class="share-btn" aria-label="Share via Email">
+        <svg viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER — DLR Style -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-column">
+        <div class="footer-logo">
+          <img src="https://www.dlrtraining.institute/assets/dlr-logo%20for%20black%20background%201.png" alt="DLR Training Institute Logo" />
+        </div>
+        <p class="footer-tagline">Shaping professionals for the global casino industry</p>
+      </div>
+      <div class="footer-column">
+        <h3 class="footer-heading">Navigation</h3>
+        <ul class="footer-links">
+          <li><a href="https://www.dlrtraining.institute/index.html">Home</a></li>
+          <li><a href="https://www.dlrtraining.institute/about.html">About</a></li>
+          <li><a href="https://www.dlrtraining.institute/courses.html">Courses</a></li>
+          <li><a href="https://www.dlrtraining.institute/fac.html">Facilities</a></li>
+          <li><a href="https://www.dlrtraining.institute/gallery.html">Gallery</a></li>
+          <li><a href="https://www.dlrtraining.institute/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3 class="footer-heading">Contact Us</h3>
+        <div class="contact-info">
+          <div class="contact-item">
+            <img src="https://www.dlrtraining.institute/assets/icons/Phone%20call.png" alt="Phone" class="contact-icon" />
+            <div><p>+91 8485060906</p><p>+91 9986230033</p></div>
+          </div>
+          <div class="contact-item">
+            <img src="https://www.dlrtraining.institute/assets/icons/mark_email_unread.png" alt="Email" class="contact-icon" />
+            <p>info@dlr.co.in</p>
+          </div>
+          <div class="contact-item">
+            <img src="https://www.dlrtraining.institute/assets/icons/location_on.png" alt="Location" class="contact-icon" />
+            <p>A-7, First Floor, Sandeep Apartment,<br>Dr. Dada Vaidya Road,<br>Near Royal Enfield Showroom,<br>Panaji, Goa-403001</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright">&copy; 2026 DLR Training Institute. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" aria-label="X"><img src="https://www.dlrtraining.institute/assets/contact_icons/X%20Logo.png" alt="X"></a>
+        <a href="#" aria-label="Facebook"><img src="https://www.dlrtraining.institute/assets/contact_icons/Icon.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/dlrtraininginstitute?igsh=Y3Y1c3V3bWF3bzZ2" aria-label="Instagram"><img src="https://www.dlrtraining.institute/assets/contact_icons/Logo%20Instagram.png" alt="Instagram"></a>
+        <a href="#" aria-label="LinkedIn"><img src="https://www.dlrtraining.institute/assets/contact_icons/LinkedIn.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript — Mobile Menu -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  const body = document.body;
+  
+  if (menuToggle) {
+    menuToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.classList.toggle('active');
+      navMenu.classList.toggle('active');
+      body.classList.toggle('menu-open');
+    });
+  }
+  
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      body.classList.remove('menu-open');
+    });
+  });
+  
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-menu') && !e.target.closest('.menu-toggle')) {
+      menuToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      body.classList.remove('menu-open');
+    }
+  });
+
+  // Scroll effect for navbar
+  window.addEventListener('scroll', function() {
+    const nav = document.querySelector('.main-nav');
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
